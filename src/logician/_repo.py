@@ -31,6 +31,7 @@ class Persister[DS](Protocol):
         """
         Initialise the persistence storage.
         """
+        ...
 
     @abstractmethod
     def commit(self, ds: DS):
@@ -48,6 +49,7 @@ class Persister[DS](Protocol):
 
         :return: the read payload.
         """
+        ...
 
 
 class PathProvider(Protocol):
@@ -150,20 +152,23 @@ class ConstTmpDirFPP(FilePathProvider):
         return self.file_path
 
 
-class FilePersister[DS](Persister, abc.ABC):
+class FilePersister[DS](Persister[DS], abc.ABC):
     def __init__(self, path_provider: PathProvider):
         self.file_path: Path = path_provider.get_path()
 
+    @override
     def init(self):
         if not self.file_path.exists():
             self.file_path.write_text("")  # create the file
 
 
 class JSONFilePersister(FilePersister[dict]):
+    @override
     def commit(self, ds: dict):
         with open(self.file_path, mode="w+") as fp:
             json.dump(ds, fp)
 
+    @override
     def reload(self) -> dict:
         try:
             return json.loads(self.file_path.read_text())
