@@ -106,7 +106,7 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
         logger configurator and wants to include its own environment variable as well in the mix.
 
         For e.g. the `push-pull-prep` project has its logger configurator to heed to ``ENV_PPP`` environment variable
-        and `push-pull-prep.some_other_module.py` needs to support ``ENV_PPP.SOM`` environment variable along with the
+        and `push-pull-prep.some_other_module.py` needs to support ``ENV_PPP_SOM`` environment variable along with the
         parent module (`push-pull-prep`'s) environment variable (``ENV_PPP``). Then it can do so like this:
 
         Examples:
@@ -119,16 +119,16 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
 
         * `push-pull-prep.some_other_module.py`'s environment variable logger configurator, which builds upon the
         `push-pull-prep`'s environment variable logger configurator. It can add its own environment variable
-        ``ENV_PPP.SOM`` and by default that takes the highest precedence:
+        ``ENV_PPP_SOM`` and by default that takes the highest precedence:
 
-        >>> som_lc = ppp_lc.clone_with_envs('ENV_PPP.SOM')
-        >>> assert ['ENV_PPP.SOM', 'ENV_PPP'] == som_lc.env_list # some_lc retains the original ppp_lc's env-var (ENV_PPP) along with its own, but its own env-var (ENV_PPP.SOM) has a higher precedence
+        >>> som_lc = ppp_lc.clone_with_envs('ENV_PPP_SOM')
+        >>> assert ['ENV_PPP_SOM', 'ENV_PPP'] == som_lc.env_list # some_lc retains the original ppp_lc's env-var (ENV_PPP) along with its own, but its own env-var (ENV_PPP_SOM) has a higher precedence
         >>> assert ['ENV_PPP'] == ppp_lc.env_list # no change to the original logger configurator's env list.
 
         * Add multiple env vars:
 
-        >>> som_lc = ppp_lc.clone_with_envs('SUMO', 'ENV_PPP.SOM', 'ENV_PPP.SOM.MOS') # multiple env vars can be registered.
-        >>> assert ['SUMO', 'ENV_PPP.SOM', 'ENV_PPP.SOM.MOS', 'ENV_PPP'] == som_lc.env_list
+        >>> som_lc = ppp_lc.clone_with_envs('SUMO', 'ENV_PPP_SOM', 'ENV_PPP_SOM_MOS') # multiple env vars can be registered.
+        >>> assert ['SUMO', 'ENV_PPP_SOM', 'ENV_PPP_SOM_MOS', 'ENV_PPP'] == som_lc.env_list
         >>> assert ['ENV_PPP'] == ppp_lc.env_list # no change to the original logger configurator's env list.
 
         * Add vars with lower precedence than the env vars of the original or parent logger configurator by setting
@@ -138,8 +138,8 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
         >>> assert ['ENV_PPP', 'OTHER_ENV'] == som_lc.env_list
         >>> assert ['ENV_PPP'] == ppp_lc.env_list # no change to the original logger configurator's env list
 
-        >>> som_lc = ppp_lc.clone_with_envs('SUMO', 'ENV_PPP.SOM', low_precedence=True)
-        >>> assert ['ENV_PPP', 'SUMO', 'ENV_PPP.SOM'] == som_lc.env_list
+        >>> som_lc = ppp_lc.clone_with_envs('SUMO', 'ENV_PPP_SOM', low_precedence=True)
+        >>> assert ['ENV_PPP', 'SUMO', 'ENV_PPP_SOM'] == som_lc.env_list
         >>> assert ['ENV_PPP'] == ppp_lc.env_list # no change to the original logger configurator's env list.
 
         :param env: extra environment variables which need to be introduced over and above the original logger
