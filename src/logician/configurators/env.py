@@ -6,6 +6,7 @@
 Logger configurators that configure log levels using environment variables.
 """
 
+import re
 import logging
 import os
 from typing import override, cast
@@ -16,6 +17,7 @@ from logician.constants import LGCN_ALL_LOG_ENV_VAR
 from logician.configurators import LevelLoggerConfigurator
 from logician.configurators.list_lc import ListLoggerConfigurator
 
+ENV_VAR_REGEX = re.compile(r"^[A-Za-z_][A-Za-z0-9_]{0,254}$")
 
 class EnvListLC[T](ListLoggerConfigurator[T]):
     DEFAULT_LEVEL_PICKUP_FIRST_NON_NONE = ListLoggerConfigurator[
@@ -27,6 +29,7 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
         env_list: list[str],
         configurator: LevelLoggerConfigurator[T],
         level_pickup_strategy=DEFAULT_LEVEL_PICKUP_FIRST_NON_NONE,
+        validate_env_vars: bool = True,
     ):
         """
         Environment variable list logger configurator.
@@ -41,6 +44,18 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
         :param level_pickup_strategy: strategy to pick-up level from a supplied list of levels. Default is to pick up
             the first supplied, then next and then so on.
         """
+
+        if env_list is None:
+            raise ValueError("Environment variable list must not be None.")
+        
+        if validate_env_vars:
+            for env in env_list:
+                if not ENV_VAR_REGEX.fullmatch(env):
+                    raise ValueError(
+                        f"Invalid environment variable name: {env}. Must match regex: {ENV_VAR_REGEX.pattern}"
+                    )
+        self._validate_env_vars = validate_env_vars
+
         super().__init__([], configurator, level_pickup_strategy)
         self._env_list = env_list
         get_repo().init()
@@ -76,7 +91,11 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
         level_pickup_strategy = overrides.pop(
             "level_pickup_strategy", self.level_pickup_strategy
         )
-        return EnvListLC[T](env_list, configurator, level_pickup_strategy)
+        validate_env_vars = overrides.pop(
+            "validate_env_vars",
+            self._validate_env_vars,
+        )
+        return EnvListLC[T](env_list, configurator, level_pickup_strategy, validate_env_vars)
 
     def clone_with_envs(
         self, env: str, *envs: str, low_precedence: bool = False
@@ -151,6 +170,7 @@ class LgcnEnvListLC[T](EnvListLC[T]):
         configurator: LevelLoggerConfigurator[T],
         level_pickup_strategy=DEFAULT_LEVEL_PICKUP_FIRST_NON_NONE,
         all_log_env_var: str = LGCN_ALL_LOG_ENV_VAR,
+        validate_env_vars: bool = True,
     ):
         """
         LgcnEnvListLC -> Logician Env var List Logger Configurator.
@@ -169,7 +189,7 @@ class LgcnEnvListLC[T](EnvListLC[T]):
         :param all_log_env_var: Environment variable which, by default, will be checked last to get the logging levels.
         """
         env_list.append(all_log_env_var)
-        super().__init__(env_list, configurator, level_pickup_strategy)
+        super().__init__(env_list, configurator, level_pickup_strategy, validate_env_vars)
 
     @override
     def clone(self, **overrides) -> "LgcnEnvListLC[T]":
@@ -183,9 +203,15 @@ class LgcnEnvListLC[T](EnvListLC[T]):
             to pick up the first non-``None`` level. ``DEFAULT_LEVEL_PICKUP_FIRST_NON_NONE``.
         :return: a new ``LgcnEnvListLC``.
         """
+        validate_env_vars = overrides.pop(
+
+            "validate_env_vars",
+            self._validate_env_vars,
+        )
         level_list = overrides.pop("env_list", self.env_list.copy())
         configurator = overrides.pop("configurator", self.underlying_configurator)
         level_pickup_strategy = overrides.pop(
             "level_pickup_strategy", self.level_pickup_strategy
         )
-        return LgcnEnvListLC[T](level_list, configurator, level_pickup_strategy)
+        return LgcnEnvListLC[T](level_list, configurator, level_pickup_strategy, validate_env_vars=validate_env_vars,
+)
