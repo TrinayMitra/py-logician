@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# coding=utf-8
 
 """
 Tests for implementation of logger impl.
@@ -10,7 +9,7 @@ from unittest.mock import patch
 
 import pytest
 
-from logician.stdlog import TRACE_LOG_LEVEL, TIMED_DETAIL_LOG_FMT, DEFAULT_STACK_LEVEL
+from logician.stdlog import DEFAULT_STACK_LEVEL, TIMED_DETAIL_LOG_FMT, TRACE_LOG_LEVEL
 from logician.stdlog.all_levels_impl import DirectAllLevelLoggerImpl, TempSetCmdLvlName
 
 

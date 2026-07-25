@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-# coding=utf-8
 
 """
 Tests for base interface logic.
 """
 
-import pytest
 import logging
+
+import pytest
 
 from logician import DirectStdAllLevelLogger
 from logician.configurators.vq.base import SimpleWarningVQLevelOrDefault

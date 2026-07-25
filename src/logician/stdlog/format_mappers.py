@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# coding=utf-8
 
 
 """
@@ -11,18 +10,19 @@ refer ``logician.stdlog.formatters.StdLogLevelFmt`` for log-level-format.
 """
 
 from abc import abstractmethod
-from typing import Protocol, IO, override
+from typing import IO, Protocol, override
 
 from logician.format_mappers import StreamFormatMapperComputer
+from logician.stdlog.constants import LOG_FMT as F
+from logician.stdlog.constants import LOG_LVL as L
 from logician.stdlog.formatters import (
-    StdLogLevelFmt,
-    StdLogAllLevelSameFmt,
-    StdLogAllLevelDiffFmt,
-    STDERR_ALL_LVL_SAME_FMT,
     STDERR_ALL_LVL_DIFF_FMT,
+    STDERR_ALL_LVL_SAME_FMT,
+    StdLogAllLevelDiffFmt,
+    StdLogAllLevelSameFmt,
+    StdLogLevelFmt,
     stderr_all_lvl_same_fmt,
 )
-from logician.stdlog.constants import LOG_LVL as L, LOG_FMT as F
 
 
 class StdStreamFormatMapperComputer(StreamFormatMapperComputer[L, F], Protocol):

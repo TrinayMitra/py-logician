@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# coding=utf-8
 
 """
 All logging interface implementation by the standard logging library of python.
@@ -9,17 +8,18 @@ All level of logging are supported by these loggers using delegation and indirec
 
 from abc import ABC, abstractmethod
 from logging import Logger
-from typing import override, cast, Protocol
+from typing import Protocol, cast, override
 
 from logician import AllLevelLogger
 from logician.delegating import DelegatingLogger
 from logician.stdlog import StdLogProtocol
-from logician.stdlog.base import DirectStdAllLevelLogger
 from logician.stdlog.all_levels_impl import (
-    StdProtocolAllLevelLoggerImpl,
     BaseDirectStdAllLevelLoggerImpl,
+    StdProtocolAllLevelLoggerImpl,
 )
-from logician.stdlog.constants import LOG_LVL as L, LOG_STR_LVL as S
+from logician.stdlog.base import DirectStdAllLevelLogger
+from logician.stdlog.constants import LOG_LVL as L
+from logician.stdlog.constants import LOG_STR_LVL as S
 
 
 class StdProtocolAllLevelLogger(AllLevelLogger[L], DelegatingLogger[L], Protocol):
@@ -165,7 +165,7 @@ class BaseDirectStdAllLevelLogger(
 
     @override
     @property
-    def underlying_logger(self) -> Logger:  # noqa
+    def underlying_logger(self) -> Logger:
         return cast(Logger, self._underlying_logger)
 
     @override

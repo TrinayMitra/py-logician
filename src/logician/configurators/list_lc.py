@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# coding=utf-8
 
 
 """
@@ -11,14 +10,15 @@ First non-None level in this supplied list is picked up by default.
 import logging
 from typing import override
 
+from vt.utils.commons.commons.collections import get_first_non_none
+
 from logician import DirectStdAllLevelLogger
 from logician._repo import get_repo
 from logician.configurators import (
-    LoggerConfigurator,
     HasUnderlyingConfigurator,
     LevelLoggerConfigurator,
+    LoggerConfigurator,
 )
-from vt.utils.commons.commons.collections import get_first_non_none
 
 
 class ListLoggerConfigurator[T](LoggerConfigurator, HasUnderlyingConfigurator):

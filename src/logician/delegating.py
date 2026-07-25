@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# coding=utf-8
 
 """
 Loggers which are designed to delegate responsibility of logging to certain logging bridges.
@@ -8,7 +7,7 @@ Loggers which are designed to delegate responsibility of logging to certain logg
 from abc import abstractmethod
 from typing import Protocol
 
-from logician import MinLogProtocol, AllLevelLogger
+from logician import AllLevelLogger, MinLogProtocol
 from logician.base import _MinLogProtocol
 
 
@@ -26,8 +25,6 @@ class ProtocolMinLevelLoggerImplBase[L](_MinLogProtocol[L], Protocol):
     L - Level type, for e.g. ``int`` for python std logging.
     """
 
-    pass
-
 
 class ProtocolMinLevelLoggerImplABC[L](
     ProtocolMinLevelLoggerImplBase[L], MinLogProtocol[L], Protocol
@@ -43,8 +40,6 @@ class ProtocolMinLevelLoggerImplABC[L](
 
     L - Level type, for e.g. ``int`` for python std logging.
     """
-
-    pass
 
 
 class AllLevelLoggerImplABC[L](
@@ -71,8 +66,6 @@ class AllLevelLoggerImplABC[L](
     L - Level type, for e.g. ``int`` for python std logging.
     """
 
-    pass
-
 
 class DelegatingLogger[L](Protocol):
     """
@@ -87,4 +80,3 @@ class DelegatingLogger[L](Protocol):
         """
         :return: the logging-class which implements logging capability.
         """
-        pass

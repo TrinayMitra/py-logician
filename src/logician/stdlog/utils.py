@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
-# coding=utf-8
 
 """
 Important utilities for std python logging library.
 """
 
 import logging
+from collections import defaultdict
 from logging import Handler
 from typing import IO
-from collections import defaultdict
 
 from vt.utils.errors.warnings import vt_warn
-from logician.stdlog.constants import LOG_LVL as L, LOG_FMT as F, LOG_STR_LVL as S
+
+from logician.stdlog.constants import LOG_FMT as F
+from logician.stdlog.constants import LOG_LVL as L
+from logician.stdlog.constants import LOG_STR_LVL as S
 
 
 def level_name_mapping() -> dict[L, S]:

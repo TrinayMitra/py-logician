@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# coding=utf-8
 
 
 """
@@ -7,14 +6,15 @@ Configure loggers as per level supplied by a supplier.
 """
 
 import logging
-from typing import Callable, override
+from collections.abc import Callable
+from typing import override
 
 from logician import DirectStdAllLevelLogger
 from logician._repo import get_repo
 from logician.configurators import (
-    LoggerConfigurator,
     HasUnderlyingConfigurator,
     LevelLoggerConfigurator,
+    LoggerConfigurator,
 )
 
 

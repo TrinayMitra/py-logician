@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# coding=utf-8
 
 
 """
@@ -7,41 +6,48 @@ Logger interfaces for standard Logger configurators.
 """
 
 import logging
-from typing import override, overload, Protocol, IO
+from typing import IO, Protocol, overload, override
 
 from vt.utils.errors.warnings import vt_warn
 
-from logician import DirectAllLevelLogger, DirectStdAllLevelLogger
-from logician import errmsg_creator
+from logician import DirectAllLevelLogger, DirectStdAllLevelLogger, errmsg_creator
 from logician._repo import get_repo
 from logician.configurators import (
-    LoggerConfigurator,
     HasUnderlyingConfigurator,
     LevelLoggerConfigurator,
+    LoggerConfigurator,
 )
 from logician.configurators.vq import (
-    V_LITERAL,
     Q_LITERAL,
+    V_LITERAL,
     VQ_DICT_LITERAL,
+    VQCommConfigurator,
     VQConfigurator,
     VQSepConfigurator,
-    VQCommConfigurator,
 )
 from logician.configurators.vq.comm import VQCommon
 from logician.configurators.vq.sep import VQSepExclusive
 from logician.format_mappers import StreamFormatMapperComputer
 from logician.formatters import LogLevelFmt
-from logician.stdlog import TRACE_LOG_LEVEL, FATAL_LOG_LEVEL
+from logician.stdlog import FATAL_LOG_LEVEL, TRACE_LOG_LEVEL
 from logician.stdlog.all_levels_impl import DirectAllLevelLoggerImpl
-from logician.stdlog.format_mappers import StdStrFmtMprComputer
-from logician.stdlog.hndlr_cfgr import HandlerConfigurator, SimpleHandlerConfigurator
 from logician.stdlog.constants import (
-    EX_LOG_LVL as E,
-    LOG_LVL as L,
-    LOG_FMT as F,
-    LOG_STR_LVL as S,
     DEFAULT_LOG_LEVEL_SUCCESS,
 )
+from logician.stdlog.constants import (
+    EX_LOG_LVL as E,
+)
+from logician.stdlog.constants import (
+    LOG_FMT as F,
+)
+from logician.stdlog.constants import (
+    LOG_LVL as L,
+)
+from logician.stdlog.constants import (
+    LOG_STR_LVL as S,
+)
+from logician.stdlog.format_mappers import StdStrFmtMprComputer
+from logician.stdlog.hndlr_cfgr import HandlerConfigurator, SimpleHandlerConfigurator
 
 
 class StdLoggerConfigurator(LevelLoggerConfigurator[E]):

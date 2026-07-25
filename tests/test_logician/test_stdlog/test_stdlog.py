@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# coding=utf-8
 
 
 import logging
@@ -54,7 +53,7 @@ def test_logging_basic_types():
     logger.info(t)
     s = {1, 2, 3, 4, None}
     logger.notice(s)
-    logger.success("success {}".format(d))
+    logger.success(f"success {d}")
     logger.warning("warning %s", lst)
     logger.error("error %(t)s", {"t": t})
     try:

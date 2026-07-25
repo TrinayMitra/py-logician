@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# coding=utf-8
 
 """
 A repo implementation for observability of logger configurators.
@@ -14,7 +13,7 @@ import tomllib
 from abc import abstractmethod
 from collections import defaultdict
 from pathlib import Path
-from typing import Protocol, Any, override
+from typing import Any, Protocol, override
 
 from logician.constants import LGCN_INFO_FP_ENV_VAR
 

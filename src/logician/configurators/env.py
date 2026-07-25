@@ -1,21 +1,20 @@
 #!/usr/bin/env python3
-# coding=utf-8
 
 
 """
 Logger configurators that configure log levels using environment variables.
 """
 
-import re
 import logging
 import os
-from typing import override, cast
+import re
+from typing import cast, override
 
 from logician import DirectStdAllLevelLogger
 from logician._repo import get_repo
-from logician.constants import LGCN_ALL_LOG_ENV_VAR
 from logician.configurators import LevelLoggerConfigurator
 from logician.configurators.list_lc import ListLoggerConfigurator
+from logician.constants import LGCN_ALL_LOG_ENV_VAR
 
 ENV_VAR_REGEX = re.compile(r"^[A-Za-z_][A-Za-z0-9_]{0,254}$")
 
@@ -44,6 +43,9 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
         :param configurator: underlying logger configurator.
         :param level_pickup_strategy: strategy to pick-up level from a supplied list of levels. Default is to pick up
             the first supplied, then next and then so on.
+        :param validate_env_vars:
+            Whether to validate supplied environment variable names for
+            cross-platform compatibility.
         """
 
         if env_list is None:
@@ -64,6 +66,11 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
     @property
     def env_list(self) -> list[str]:
         return self._env_list
+
+    @property
+    def validate_env_vars(self) -> bool:
+        """Whether environment variable validation is enabled."""
+        return self._validate_env_vars
 
     @override
     @property
@@ -94,11 +101,12 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
         )
         validate_env_vars = overrides.pop(
             "validate_env_vars",
-            self._validate_env_vars,
+            self.validate_env_vars,
         )
         return EnvListLC[T](
             env_list, configurator, level_pickup_strategy, validate_env_vars
         )
+
 
     def clone_with_envs(
         self, env: str, *envs: str, low_precedence: bool = False
@@ -190,6 +198,9 @@ class LgcnEnvListLC[T](EnvListLC[T]):
         :param level_pickup_strategy: strategy to pick-up level from a supplied list of levels. Default is to pick up
             the first supplied, then next and then so on.
         :param all_log_env_var: Environment variable which, by default, will be checked last to get the logging levels.
+        :param validate_env_vars:
+            Whether to validate supplied environment variable names for
+            cross-platform compatibility.
         """
         env_list.append(all_log_env_var)
         super().__init__(
@@ -210,7 +221,7 @@ class LgcnEnvListLC[T](EnvListLC[T]):
         """
         validate_env_vars = overrides.pop(
             "validate_env_vars",
-            self._validate_env_vars,
+            self.validate_env_vars,
         )
         level_list = overrides.pop("env_list", self.env_list.copy())
         configurator = overrides.pop("configurator", self.underlying_configurator)
