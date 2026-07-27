@@ -44,8 +44,8 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
         :param level_pickup_strategy: strategy to pick-up level from a supplied list of levels. Default is to pick up
             the first supplied, then next and then so on.
         :param validate_env_vars:
-            Whether to validate supplied environment variable names for
-            cross-platform compatibility.
+        Whether to validate supplied environment variable names for
+        cross-platform compatibility.
         """
 
         if env_list is None:
@@ -69,7 +69,10 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
 
     @property
     def validate_env_vars(self) -> bool:
-        """Whether environment variable validation is enabled."""
+        """
+        :returns: Whether environment variable validation is enabled.
+
+        """
         return self._validate_env_vars
 
     @override
@@ -234,3 +237,4 @@ class LgcnEnvListLC[T](EnvListLC[T]):
             level_pickup_strategy,
             validate_env_vars=validate_env_vars,
         )
+

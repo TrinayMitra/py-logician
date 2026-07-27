@@ -35,7 +35,7 @@ class LogLevelFmt[L, F](Protocol):
         :param level: ``level`` for which the log ``format`` is to be queried.
         :return: format for the queried ``level``.
         """
-        # pragma: no cover
+        ... # pragma: no cover
 
 
 class AllLevelSameFmt[L, F](LogLevelFmt[L, F], Protocol):
@@ -76,6 +76,8 @@ class DiffLevelDiffFmt[L, F](LogLevelFmt[L, F], Protocol):
         - most verbose TRACE level.
         2025-04-03 20:59:39,418: TRACE: [filename.py:218 - func()]: some trace info
     """
+    ...
+
 
     @abstractmethod
     def next_approx_level(self, missing_level: L) -> L:
@@ -83,4 +85,6 @@ class DiffLevelDiffFmt[L, F](LogLevelFmt[L, F], Protocol):
         :param missing_level: A level that was not registered in the logger.
         :return: next approx level if a ``missing_level`` is queried which wasn't already registered in the logger.
         """
-        # pragma: no cover
+        ... # pragma: no cover
+
+        

@@ -30,7 +30,7 @@ class LoggerConfigurator(Protocol):
         :param logger: std python logger
         :return: A configured All level logging std python logger.
         """
-        # pragma: no cover
+        ... # pragma: no cover
 
     @abstractmethod
     def clone(self, **overrides) -> "LoggerConfigurator":
@@ -88,3 +88,5 @@ class LevelLoggerConfigurator[L](LevelTarget[L], LoggerConfigurator, Protocol):
 
     L - Level type, for e.g. ``int`` for python std logging.
     """
+    ...
+    
