@@ -215,6 +215,7 @@ class StdLoggerConfigurator(LevelLoggerConfigurator[E]):
         levels_to_choose_from: dict[L, S] = DirectAllLevelLogger.register_levels(
             self.level_name_map
         )
+        is_off = False # logging off flag
         try:
             match level:
                 case L():  # typically int
@@ -222,6 +223,7 @@ class StdLoggerConfigurator(LevelLoggerConfigurator[E]):
                 case S():  # typically str
                     if level.upper() == "OFF":
                         int_level = logging.NOTSET
+                        is_off = True
                     else:
                         int_level = (
                             L(level)
@@ -246,7 +248,7 @@ class StdLoggerConfigurator(LevelLoggerConfigurator[E]):
                     f"'{logging.getLevelName(StdLoggerConfigurator.LOG_LEVEL_DEFAULT_SUCCESS)}'."
                 )
             int_level = StdLoggerConfigurator.LOG_LEVEL_DEFAULT_SUCCESS
-        is_off = isinstance(level, str) and level.upper() == "OFF"
+        
 
         if is_off:
             logger.disabled = True
