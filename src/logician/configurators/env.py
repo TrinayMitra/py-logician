@@ -6,6 +6,7 @@
 Logger configurators that configure log levels using environment variables.
 """
 
+import re
 import logging
 import os
 from typing import override, cast
@@ -15,6 +16,8 @@ from logician._repo import get_repo
 from logician.constants import LGCN_ALL_LOG_ENV_VAR
 from logician.configurators import LevelLoggerConfigurator
 from logician.configurators.list_lc import ListLoggerConfigurator
+
+ENV_VAR_REGEX = re.compile(r"^[A-Za-z_][A-Za-z0-9_]{0,254}$")
 
 
 class EnvListLC[T](ListLoggerConfigurator[T]):
@@ -27,6 +30,7 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
         env_list: list[str],
         configurator: LevelLoggerConfigurator[T],
         level_pickup_strategy=DEFAULT_LEVEL_PICKUP_FIRST_NON_NONE,
+        validate_env_vars: bool = True,
     ):
         """
         Environment variable list logger configurator.
@@ -41,6 +45,18 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
         :param level_pickup_strategy: strategy to pick-up level from a supplied list of levels. Default is to pick up
             the first supplied, then next and then so on.
         """
+
+        if env_list is None:
+            raise ValueError("Environment variable list must not be None.")
+
+        if validate_env_vars:
+            for env in env_list:
+                if not ENV_VAR_REGEX.fullmatch(env):
+                    raise ValueError(
+                        f"Invalid environment variable name: {env}. Must match regex: {ENV_VAR_REGEX.pattern}"
+                    )
+        self._validate_env_vars = validate_env_vars
+
         super().__init__([], configurator, level_pickup_strategy)
         self._env_list = env_list
         get_repo().init()
@@ -76,7 +92,13 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
         level_pickup_strategy = overrides.pop(
             "level_pickup_strategy", self.level_pickup_strategy
         )
-        return EnvListLC[T](env_list, configurator, level_pickup_strategy)
+        validate_env_vars = overrides.pop(
+            "validate_env_vars",
+            self._validate_env_vars,
+        )
+        return EnvListLC[T](
+            env_list, configurator, level_pickup_strategy, validate_env_vars
+        )
 
     def clone_with_envs(
         self, env: str, *envs: str, low_precedence: bool = False
@@ -87,7 +109,7 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
         logger configurator and wants to include its own environment variable as well in the mix.
 
         For e.g. the `push-pull-prep` project has its logger configurator to heed to ``ENV_PPP`` environment variable
-        and `push-pull-prep.some_other_module.py` needs to support ``ENV_PPP.SOM`` environment variable along with the
+        and `push-pull-prep.some_other_module.py` needs to support ``ENV_PPP_SOM`` environment variable along with the
         parent module (`push-pull-prep`'s) environment variable (``ENV_PPP``). Then it can do so like this:
 
         Examples:
@@ -100,16 +122,16 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
 
         * `push-pull-prep.some_other_module.py`'s environment variable logger configurator, which builds upon the
         `push-pull-prep`'s environment variable logger configurator. It can add its own environment variable
-        ``ENV_PPP.SOM`` and by default that takes the highest precedence:
+        ``ENV_PPP_SOM`` and by default that takes the highest precedence:
 
-        >>> som_lc = ppp_lc.clone_with_envs('ENV_PPP.SOM')
-        >>> assert ['ENV_PPP.SOM', 'ENV_PPP'] == som_lc.env_list # some_lc retains the original ppp_lc's env-var (ENV_PPP) along with its own, but its own env-var (ENV_PPP.SOM) has a higher precedence
+        >>> som_lc = ppp_lc.clone_with_envs('ENV_PPP_SOM')
+        >>> assert ['ENV_PPP_SOM', 'ENV_PPP'] == som_lc.env_list # some_lc retains the original ppp_lc's env-var (ENV_PPP) along with its own, but its own env-var (ENV_PPP_SOM) has a higher precedence
         >>> assert ['ENV_PPP'] == ppp_lc.env_list # no change to the original logger configurator's env list.
 
         * Add multiple env vars:
 
-        >>> som_lc = ppp_lc.clone_with_envs('SUMO', 'ENV_PPP.SOM', 'ENV_PPP.SOM.MOS') # multiple env vars can be registered.
-        >>> assert ['SUMO', 'ENV_PPP.SOM', 'ENV_PPP.SOM.MOS', 'ENV_PPP'] == som_lc.env_list
+        >>> som_lc = ppp_lc.clone_with_envs('SUMO', 'ENV_PPP_SOM', 'ENV_PPP_SOM_MOS') # multiple env vars can be registered.
+        >>> assert ['SUMO', 'ENV_PPP_SOM', 'ENV_PPP_SOM_MOS', 'ENV_PPP'] == som_lc.env_list
         >>> assert ['ENV_PPP'] == ppp_lc.env_list # no change to the original logger configurator's env list.
 
         * Add vars with lower precedence than the env vars of the original or parent logger configurator by setting
@@ -119,8 +141,8 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
         >>> assert ['ENV_PPP', 'OTHER_ENV'] == som_lc.env_list
         >>> assert ['ENV_PPP'] == ppp_lc.env_list # no change to the original logger configurator's env list
 
-        >>> som_lc = ppp_lc.clone_with_envs('SUMO', 'ENV_PPP.SOM', low_precedence=True)
-        >>> assert ['ENV_PPP', 'SUMO', 'ENV_PPP.SOM'] == som_lc.env_list
+        >>> som_lc = ppp_lc.clone_with_envs('SUMO', 'ENV_PPP_SOM', low_precedence=True)
+        >>> assert ['ENV_PPP', 'SUMO', 'ENV_PPP_SOM'] == som_lc.env_list
         >>> assert ['ENV_PPP'] == ppp_lc.env_list # no change to the original logger configurator's env list.
 
         :param env: extra environment variables which need to be introduced over and above the original logger
@@ -151,6 +173,7 @@ class LgcnEnvListLC[T](EnvListLC[T]):
         configurator: LevelLoggerConfigurator[T],
         level_pickup_strategy=DEFAULT_LEVEL_PICKUP_FIRST_NON_NONE,
         all_log_env_var: str = LGCN_ALL_LOG_ENV_VAR,
+        validate_env_vars: bool = True,
     ):
         """
         LgcnEnvListLC -> Logician Env var List Logger Configurator.
@@ -169,7 +192,9 @@ class LgcnEnvListLC[T](EnvListLC[T]):
         :param all_log_env_var: Environment variable which, by default, will be checked last to get the logging levels.
         """
         env_list.append(all_log_env_var)
-        super().__init__(env_list, configurator, level_pickup_strategy)
+        super().__init__(
+            env_list, configurator, level_pickup_strategy, validate_env_vars
+        )
 
     @override
     def clone(self, **overrides) -> "LgcnEnvListLC[T]":
@@ -183,9 +208,18 @@ class LgcnEnvListLC[T](EnvListLC[T]):
             to pick up the first non-``None`` level. ``DEFAULT_LEVEL_PICKUP_FIRST_NON_NONE``.
         :return: a new ``LgcnEnvListLC``.
         """
+        validate_env_vars = overrides.pop(
+            "validate_env_vars",
+            self._validate_env_vars,
+        )
         level_list = overrides.pop("env_list", self.env_list.copy())
         configurator = overrides.pop("configurator", self.underlying_configurator)
         level_pickup_strategy = overrides.pop(
             "level_pickup_strategy", self.level_pickup_strategy
         )
-        return LgcnEnvListLC[T](level_list, configurator, level_pickup_strategy)
+        return LgcnEnvListLC[T](
+            level_list,
+            configurator,
+            level_pickup_strategy,
+            validate_env_vars=validate_env_vars,
+        )
