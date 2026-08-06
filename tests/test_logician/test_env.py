@@ -53,6 +53,6 @@ class TestEnvListLC:
             ["MY-VAR"],
             StdLoggerConfigurator(),
             validate_env_vars=False,
-    )
+        )
         clone = cfg.clone()
         assert clone._validate_env_vars is False

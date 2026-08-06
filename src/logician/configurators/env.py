@@ -19,6 +19,7 @@ from logician.configurators.list_lc import ListLoggerConfigurator
 
 ENV_VAR_REGEX = re.compile(r"^[A-Za-z_][A-Za-z0-9_]{0,254}$")
 
+
 class EnvListLC[T](ListLoggerConfigurator[T]):
     DEFAULT_LEVEL_PICKUP_FIRST_NON_NONE = ListLoggerConfigurator[
         T
@@ -47,7 +48,7 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
 
         if env_list is None:
             raise ValueError("Environment variable list must not be None.")
-        
+
         if validate_env_vars:
             for env in env_list:
                 if not ENV_VAR_REGEX.fullmatch(env):
@@ -95,7 +96,9 @@ class EnvListLC[T](ListLoggerConfigurator[T]):
             "validate_env_vars",
             self._validate_env_vars,
         )
-        return EnvListLC[T](env_list, configurator, level_pickup_strategy, validate_env_vars)
+        return EnvListLC[T](
+            env_list, configurator, level_pickup_strategy, validate_env_vars
+        )
 
     def clone_with_envs(
         self, env: str, *envs: str, low_precedence: bool = False
@@ -189,7 +192,9 @@ class LgcnEnvListLC[T](EnvListLC[T]):
         :param all_log_env_var: Environment variable which, by default, will be checked last to get the logging levels.
         """
         env_list.append(all_log_env_var)
-        super().__init__(env_list, configurator, level_pickup_strategy, validate_env_vars)
+        super().__init__(
+            env_list, configurator, level_pickup_strategy, validate_env_vars
+        )
 
     @override
     def clone(self, **overrides) -> "LgcnEnvListLC[T]":
@@ -204,7 +209,6 @@ class LgcnEnvListLC[T](EnvListLC[T]):
         :return: a new ``LgcnEnvListLC``.
         """
         validate_env_vars = overrides.pop(
-
             "validate_env_vars",
             self._validate_env_vars,
         )
@@ -213,5 +217,9 @@ class LgcnEnvListLC[T](EnvListLC[T]):
         level_pickup_strategy = overrides.pop(
             "level_pickup_strategy", self.level_pickup_strategy
         )
-        return LgcnEnvListLC[T](level_list, configurator, level_pickup_strategy, validate_env_vars=validate_env_vars,
-)
+        return LgcnEnvListLC[T](
+            level_list,
+            configurator,
+            level_pickup_strategy,
+            validate_env_vars=validate_env_vars,
+        )
