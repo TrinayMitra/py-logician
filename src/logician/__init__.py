@@ -53,4 +53,3 @@ def get_direct_all_level_logger(logger: Logger) -> DirectStdAllLevelLogger:
     :return: logician configured logger.
     """
     return DirectAllLevelLogger(_DALImpl(logger))
-

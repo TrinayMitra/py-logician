@@ -26,7 +26,7 @@ class StdLogLevelFmt(LogLevelFmt[L, F], Protocol):
     """
     Base interface for all the level-format mappers for stdlog.
     """
-    ...
+
 
 class StdLogAllLevelSameFmt(StdLogLevelFmt, AllLevelSameFmt[L, F]):
     def __init__(self, fmt: F = SHORTER_LOG_FMT):

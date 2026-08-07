@@ -65,7 +65,6 @@ class AllLevelLoggerImplABC[L](
 
     L - Level type, for e.g. ``int`` for python std logging.
     """
-    ...
 
 
 class DelegatingLogger[L](Protocol):
@@ -81,5 +80,3 @@ class DelegatingLogger[L](Protocol):
         """
         :return: the logging-class which implements logging capability.
         """
-        ...
-

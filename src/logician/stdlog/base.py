@@ -170,5 +170,5 @@ class DirectStdAllLevelLogger(AllLevelLogger[L], Protocol):
     @override
     @property
     @abstractmethod
-    def underlying_logger(self) -> logging.Logger: #noqa
+    def underlying_logger(self) -> logging.Logger:
         pass

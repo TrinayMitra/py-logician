@@ -57,7 +57,7 @@ class BaseDirectStdAllLevelLoggerImpl(StdProtocolAllLevelLoggerImpl, Protocol):
     @override
     @property
     @abstractmethod
-    def underlying_logger(self) -> Logger: #noqa
+    def underlying_logger(self) -> Logger:
         pass
 
 
@@ -76,7 +76,7 @@ class DirectAllLevelLoggerImpl(BaseDirectStdAllLevelLoggerImpl):
 
     @override
     @property
-    def underlying_logger(self) -> Logger: #noqa
+    def underlying_logger(self) -> Logger:
         return self._underlying_logger
 
     @override

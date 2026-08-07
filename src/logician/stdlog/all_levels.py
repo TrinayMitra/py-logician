@@ -165,7 +165,7 @@ class BaseDirectStdAllLevelLogger(
 
     @override
     @property
-    def underlying_logger(self) -> Logger: #noqa
+    def underlying_logger(self) -> Logger:
         return cast(Logger, self._underlying_logger)
 
     @override

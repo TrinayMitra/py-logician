@@ -157,7 +157,7 @@ class _MinLogProtocol[L](
         - ERROR
         - CRITICAL
     """
-    ...
+
 
 class MinLogProtocol[L](_MinLogProtocol[L], Protocol):
     """
@@ -171,7 +171,6 @@ class MinLogProtocol[L](_MinLogProtocol[L], Protocol):
 
     L - Level type, for e.g. ``int`` for python std logging.
     """
-    ...
 
 
 class AllLogProtocol[L](
@@ -204,8 +203,7 @@ class AllLogProtocol[L](
 
     L - Level type, for e.g. ``int`` for python std logging.
     """
-    ...
-    
+
 
 class HasUnderlyingLogger[L](Protocol):
     """
@@ -226,7 +224,7 @@ class HasUnderlyingLogger[L](Protocol):
 
         :return: the contained underlying logger.
         """
-        ... # pragma: no cover
+        # pragma: no cover
 
 
 class SupportsTraceback(Protocol):
@@ -268,5 +266,3 @@ class AllLevelLogger[L](
 
     L - Level type, for e.g. ``int`` for python std logging.
     """
-    ...
-
