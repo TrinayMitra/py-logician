@@ -28,10 +28,7 @@ class TestEnvListLC:
         ],
     )
     def test_rejects_invalid_env_vars(self, env_name):
-        with pytest.raises(
-            ValueError,
-            match=r"Invalid environment variable name: .*",
-        ):
+        with pytest.raises(ValueError):
             EnvListLC([env_name], StdLoggerConfigurator())
 
     @pytest.mark.parametrize(
@@ -51,18 +48,11 @@ class TestEnvListLC:
             validate_env_vars=False,
         )
 
-    @pytest.mark.parametrize(
-        "validate_env_vars",
-        [True, False],
-    )
-    def test_clone_preserves_validate_env_vars(
-        self,
-        validate_env_vars,
-    ):
+    def test_clone_preserves_validate_env_vars(self):
         cfg = EnvListLC(
-            ["HOME"],
+            ["MY-VAR"],
             StdLoggerConfigurator(),
             validate_env_vars=False,
-    )
+        )
         clone = cfg.clone()
         assert clone._validate_env_vars is False

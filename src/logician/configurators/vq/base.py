@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# coding=utf-8
 
 
 """
@@ -6,14 +7,15 @@ Base interfaces for verbosity (V) and quietness (Q) configurators.
 """
 
 from abc import abstractmethod
-from typing import Any, Literal, Protocol, overload, override
+from typing import Protocol, Literal, Any, override, overload
 
 from vt.utils.errors.error_specs import DefaultOrError, WarningWithDefault
 from vt.utils.errors.error_specs.base import SimpleWarningWithDefault
 from vt.utils.errors.warnings import Warner
 
+from logician.configurators.vq import VQ_DICT_LITERAL, V_LITERAL, Q_LITERAL
+
 from logician import errmsg_creator
-from logician.configurators.vq import Q_LITERAL, V_LITERAL, VQ_DICT_LITERAL
 
 
 class VQConfigurator[T](Protocol):

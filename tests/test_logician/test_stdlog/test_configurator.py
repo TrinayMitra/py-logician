@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# coding=utf-8
 
 """
 Tests std log configurators.
@@ -16,11 +17,11 @@ import pytest
 
 from logician import DirectAllLevelLogger
 from logician.stdlog.configurator import StdLoggerConfigurator
+from logician.stdlog.formatters import STDERR_ALL_LVL_SAME_FMT
 from logician.stdlog.formatters import (
-    STDERR_ALL_LVL_DIFF_FMT,
-    STDERR_ALL_LVL_SAME_FMT,
-    StdLogAllLevelDiffFmt,
     StdLogAllLevelSameFmt,
+    StdLogAllLevelDiffFmt,
+    STDERR_ALL_LVL_DIFF_FMT,
 )
 from logician.stdlog.utils import level_name_mapping
 
@@ -52,7 +53,7 @@ class TestStdLoggerConfigurator:
                     StdLoggerConfigurator(
                         stream_fmt_mapper=STDERR_ALL_LVL_SAME_FMT,
                         same_fmt_per_lvl=diff,
-                    )
+                    )  # noqa
 
             @pytest.mark.parametrize(
                 "stream_set", [{sys.stderr}, {sys.stderr, sys.stdout}]
@@ -65,7 +66,7 @@ class TestStdLoggerConfigurator:
                     StdLoggerConfigurator(
                         stream_fmt_mapper=STDERR_ALL_LVL_SAME_FMT,
                         stream_set=stream_set,
-                    )
+                    )  # noqa
 
         class TestStreamList:
             def test_default_produces_stream_formatter_list(self):
@@ -110,7 +111,8 @@ class TestStdLoggerConfigurator:
                 }
                 cfg = StdLoggerConfigurator(stream_fmt_mapper=stream_fmt_mapper)
                 assert all(
-                    stream in cfg.stream_fmt_mapper for stream in stream_fmt_mapper
+                    stream in cfg.stream_fmt_mapper
+                    for stream in stream_fmt_mapper.keys()
                 )
                 assert TextIO not in cfg.stream_fmt_mapper
 

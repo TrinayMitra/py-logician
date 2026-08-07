@@ -1,29 +1,31 @@
 #!/usr/bin/env python3
+# coding=utf-8
 
 """
 Extract and showcase details about a program's logger configurators.
 """
 
-import argparse
 import os
 import shlex
-import subprocess
 import sys
+import argparse
+import subprocess
 import tempfile
 from collections import defaultdict
 from pathlib import Path
 from typing import Any
-
-from vt.utils.commons.commons.strings import generate_random_string
-from vt.utils.errors.error_specs import ERR_CMD_NOT_FOUND, ERR_INVALID_USAGE
-
-from logician.constants import LGCN_INFO_FP_ENV_VAR, LGCN_MAIN_CMD_NAME
 from logician.errors import (
+    LogicianExitingException,
     LogicianCmdException,
     LogicianCmdNotFoundError,
     LogicianException,
-    LogicianExitingException,
 )
+
+from vt.utils.commons.commons.strings import generate_random_string
+
+from vt.utils.errors.error_specs import ERR_INVALID_USAGE, ERR_CMD_NOT_FOUND
+
+from logician.constants import LGCN_MAIN_CMD_NAME, LGCN_INFO_FP_ENV_VAR
 
 # TODO: add extensive examples in the README. Better yet, create a whole separate file/section for examples.
 

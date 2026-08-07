@@ -104,7 +104,7 @@ logger.debug("🐞 Debug from logician.")
 logger.cmd("📺 My command's output (maybe captured stderr)", cmd_name="MY_CMD")
 logger.info("ℹ️ Info from logician.")
 logger.success("✅ Success from logician.")  # majorly user/CLI facing log-level
-logger.notice("🔔 Notice from logician.")  # majorly user/CLI facing log-level
+logger.notice("🔔 Notice from logician.")    # majorly user/CLI facing log-level
 logger.warning("⚠️ Warning from logician.")
 logger.error("❌ Error!")
 logger.exception("🔥 Exception!")
@@ -162,10 +162,8 @@ from logician.stdlog.configurator import StdLoggerConfigurator
 from logician.configurators.env import EnvListLC
 import logging
 
-base_logger = logging.getLogger("ap-generator")  # python std logger
-logger = EnvListLC(["APGEN"], StdLoggerConfigurator(level=logging.INFO)).configure(
-    base_logger
-)
+base_logger = logging.getLogger('ap-generator')  # python std logger
+logger = EnvListLC(["APGEN"], StdLoggerConfigurator(level=logging.INFO)).configure(base_logger)
 ```
 
 One can have multiple env-vars set on the configurator with decreasing order of priority, for e.g.:
@@ -175,7 +173,7 @@ import logging
 from logician.stdlog.configurator import StdLoggerConfigurator
 from logician.configurators.env import EnvListLC
 
-base_logger = logging.getLogger("gp-generator")
+base_logger = logging.getLogger('gp-generator')
 logger = EnvListLC(["GPGEN", "GPGENLP"], StdLoggerConfigurator()).configure(base_logger)
 """
 ``GPGENLP`` has lower priority that ``GPGEN`` to the logger configurator.
@@ -230,9 +228,7 @@ parser.add_argument("-v", "--verbose", action="count", default=0)
 parser.add_argument("-q", "--quiet", action="count", default=0)
 args = parser.parse_args()
 
-lc = VQSepLoggerConfigurator(
-    StdLoggerConfigurator(), verbosity=args.verbose, quietness=args.quiet
-)
+lc = VQSepLoggerConfigurator(StdLoggerConfigurator(), verbosity=args.verbose, quietness=args.quiet)
 logger = logging.getLogger(__name__)
 logger = lc.configure(logger)
 ```

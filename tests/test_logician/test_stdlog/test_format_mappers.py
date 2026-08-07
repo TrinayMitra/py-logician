@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# coding=utf-8
 
 """
 Tests related to format-mappers computers of stdlog.
@@ -11,7 +12,7 @@ from typing import TextIO
 import pytest
 
 from logician.stdlog.format_mappers import StdStrFmtMprComputer
-from logician.stdlog.formatters import StdLogAllLevelDiffFmt, StdLogAllLevelSameFmt
+from logician.stdlog.formatters import StdLogAllLevelSameFmt, StdLogAllLevelDiffFmt
 
 
 class TestStdStrFmtMprComputer:

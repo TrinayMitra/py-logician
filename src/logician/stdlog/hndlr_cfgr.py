@@ -6,12 +6,11 @@ Configurators for python std logger handlers.
 
 import logging
 from abc import abstractmethod
-from typing import IO, Protocol, override
+from typing import Protocol, IO, override
 
 from logician.formatters import LogLevelFmt
-from logician.stdlog.constants import LOG_FMT as F
-from logician.stdlog.constants import LOG_LVL as L
-from logician.stdlog.utils import add_new_formatter, form_stream_handlers_map
+from logician.stdlog.utils import form_stream_handlers_map, add_new_formatter
+from logician.stdlog.constants import LOG_LVL as L, LOG_FMT as F
 
 
 class HandlerConfigurator(Protocol):
@@ -35,7 +34,7 @@ class HandlerConfigurator(Protocol):
         :param logger: the logger to configure.
         :param stream_fmt_map: the stream-format-handler-map that will configure the supplied logger's handlers.
         """
-        # pragma: no cover
+        pass  # pragma: no cover
 
 
 class SimpleHandlerConfigurator(HandlerConfigurator):

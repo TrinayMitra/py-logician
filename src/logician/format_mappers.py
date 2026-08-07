@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# coding=utf-8
 
 
 """
@@ -10,7 +11,7 @@ refer ``logician.formatters.LogLevelFmt`` for log-level-format.
 """
 
 from abc import abstractmethod
-from typing import IO, Protocol
+from typing import Protocol, IO
 
 from logician.formatters import LogLevelFmt
 
@@ -39,4 +40,4 @@ class StreamFormatMapperComputer[L, F](Protocol):
         :return: a dictionary of stream->log-level-format.
         """
 
-        # pragma: no cover
+        pass  # pragma: no cover

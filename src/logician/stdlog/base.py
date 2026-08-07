@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# coding=utf-8
 
 """
 Logging interfaces for the standard logging library of python.
@@ -6,28 +7,26 @@ Logging interfaces for the standard logging library of python.
 
 import logging
 from abc import abstractmethod
-from collections.abc import Mapping
-from typing import Any, Protocol, override
+from typing import Protocol, Any, Mapping, override
 
-from logician import AllLevelLogger, MinLogProtocol
-from logician.base import ExceptionLogProtocol, FatalLogProtocol, HasUnderlyingLogger
+from logician import MinLogProtocol, AllLevelLogger
+from logician.base import FatalLogProtocol, ExceptionLogProtocol, HasUnderlyingLogger
 from logician.stdlog import (
-    CMD_LOG_LEVEL,
-    CMD_LOG_STR,
+    TRACE_LOG_LEVEL,
+    TRACE_LOG_STR,
+    SUCCESS_LOG_LEVEL,
+    SUCCESS_LOG_STR,
+    NOTICE_LOG_LEVEL,
+    NOTICE_LOG_STR,
     EXCEPTION_TRACEBACK_LOG_LEVEL,
     EXCEPTION_TRACEBACK_LOG_STR,
     FATAL_LOG_LEVEL,
     FATAL_LOG_STR,
-    NOTICE_LOG_LEVEL,
-    NOTICE_LOG_STR,
-    SUCCESS_LOG_LEVEL,
-    SUCCESS_LOG_STR,
-    TRACE_LOG_LEVEL,
-    TRACE_LOG_STR,
+    CMD_LOG_LEVEL,
+    CMD_LOG_STR,
 )
-from logician.stdlog.constants import LOG_LVL as L
-from logician.stdlog.constants import LOG_STR_LVL as S
 from logician.stdlog.utils import level_name_mapping
+from logician.stdlog.constants import LOG_LVL as L, LOG_STR_LVL as S
 
 
 class StdLogProtocol(MinLogProtocol[L], Protocol):
@@ -84,6 +83,8 @@ class StdLevelLogger(
         - fatal
         - exception
     """
+
+    pass
 
 
 class DirectStdAllLevelLogger(AllLevelLogger[L], Protocol):
@@ -170,5 +171,5 @@ class DirectStdAllLevelLogger(AllLevelLogger[L], Protocol):
     @override
     @property
     @abstractmethod
-    def underlying_logger(self) -> logging.Logger:
+    def underlying_logger(self) -> logging.Logger:  # noqa
         pass

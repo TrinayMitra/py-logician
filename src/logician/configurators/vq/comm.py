@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# coding=utf-8
 
 
 """
@@ -17,10 +18,10 @@ from abc import abstractmethod
 from typing import Protocol, override
 
 from logician.configurators.vq import (
-    Q_LITERAL,
-    V_LITERAL,
-    VQ_DICT_LITERAL,
     VQConfigurator,
+    V_LITERAL,
+    Q_LITERAL,
+    VQ_DICT_LITERAL,
     VQLevelOrDefault,
 )
 from logician.configurators.vq.base import SimpleWarningVQLevelOrDefault

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# coding=utf-8
 
 """
 Classes w.r.t implementation inheritance are defined here.
@@ -7,22 +8,22 @@ Classes w.r.t implementation inheritance are defined here.
 import warnings
 from abc import abstractmethod
 from logging import Logger
-from typing import Protocol, override
+from typing import override, Protocol
 
 from logician.delegating import AllLevelLoggerImplABC
 from logician.stdlog import (
+    TRACE_LOG_LEVEL,
+    NOTICE_LOG_LEVEL,
+    SUCCESS_LOG_LEVEL,
+    StdLogProtocol,
+    INDIRECTION_STACK_LEVEL,
+    FATAL_LOG_LEVEL,
     CMD_LOG_LEVEL,
     CMD_LOG_STR,
     EXCEPTION_TRACEBACK_LOG_LEVEL,
-    FATAL_LOG_LEVEL,
-    INDIRECTION_STACK_LEVEL,
-    NOTICE_LOG_LEVEL,
-    SUCCESS_LOG_LEVEL,
-    TRACE_LOG_LEVEL,
-    StdLogProtocol,
 )
-from logician.stdlog.constants import LOG_LVL as L
 from logician.stdlog.utils import TempSetLevelName
+from logician.stdlog.constants import LOG_LVL as L
 
 
 class StdProtocolAllLevelLoggerImpl(AllLevelLoggerImplABC[L], Protocol):
@@ -57,7 +58,7 @@ class BaseDirectStdAllLevelLoggerImpl(StdProtocolAllLevelLoggerImpl, Protocol):
     @override
     @property
     @abstractmethod
-    def underlying_logger(self) -> Logger:
+    def underlying_logger(self) -> Logger:  # noqa
         pass
 
 
@@ -76,7 +77,7 @@ class DirectAllLevelLoggerImpl(BaseDirectStdAllLevelLoggerImpl):
 
     @override
     @property
-    def underlying_logger(self) -> Logger:
+    def underlying_logger(self) -> Logger:  # noqa
         return self._underlying_logger
 
     @override

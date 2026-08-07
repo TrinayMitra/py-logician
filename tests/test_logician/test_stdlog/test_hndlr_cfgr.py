@@ -11,8 +11,8 @@ import pytest
 
 from logician.stdlog import SHORTER_LOG_FMT
 from logician.stdlog.formatters import StdLogAllLevelSameFmt
-from logician.stdlog.hndlr_cfgr import SimpleHandlerConfigurator
 from logician.stdlog.utils import form_stream_handlers_map
+from logician.stdlog.hndlr_cfgr import SimpleHandlerConfigurator
 
 
 class TestSimpleHandlerFormatter:

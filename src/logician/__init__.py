@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# coding=utf-8
 
 """
 Logging related library.
@@ -17,25 +18,28 @@ supplying the logger class to perform delegation onto by this library.
 
 from logging import Logger
 
-from vt.utils.errors.error_specs import ErrorMsgFormer as ErrorMsgFormer
 
 # region base re-exports
 from logician.base import AllLevelLogger as AllLevelLogger
 from logician.base import MinLogProtocol as MinLogProtocol
-from logician.constants import LGCN_ALL_LOG_ENV_VAR as LGCN_ALL_LOG_ENV_VAR
+# endregion
+
+# region std-log re-exports
+from logician.stdlog import StdLogProtocol as StdLogProtocol
+from logician.stdlog import StdLevelLogger as StdLevelLogger
+from logician.stdlog import StdProtocolAllLevelLogger as StdProtocolAllLevelLogger
 from logician.stdlog import BaseDirectStdAllLevelLogger as BaseDirectStdAllLevelLogger
 from logician.stdlog import DirectAllLevelLogger as DirectAllLevelLogger
 from logician.stdlog import DirectStdAllLevelLogger as DirectStdAllLevelLogger
-from logician.stdlog import StdLevelLogger as StdLevelLogger
-
 # endregion
-# region std-log re-exports
-from logician.stdlog import StdLogProtocol as StdLogProtocol
-from logician.stdlog import StdProtocolAllLevelLogger as StdProtocolAllLevelLogger
 
-# endregion
 from logician.stdlog.all_levels_impl import DirectAllLevelLoggerImpl as _DALImpl
+
+from logician.constants import LGCN_ALL_LOG_ENV_VAR as LGCN_ALL_LOG_ENV_VAR
+
 from logician.utils import command_or_file as command_or_file
+
+from vt.utils.errors.error_specs import ErrorMsgFormer as ErrorMsgFormer
 
 errmsg_creator = ErrorMsgFormer
 """

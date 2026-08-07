@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# coding=utf-8
 
 
 """
@@ -15,10 +16,10 @@ from vt.utils.errors.warnings import vt_warn
 
 from logician import errmsg_creator
 from logician.configurators.vq import (
-    Q_LITERAL,
-    V_LITERAL,
-    VQ_DICT_LITERAL,
     VQConfigurator,
+    V_LITERAL,
+    Q_LITERAL,
+    VQ_DICT_LITERAL,
     VQLevelOrDefault,
 )
 from logician.configurators.vq.base import SimpleWarningVQLevelOrDefault

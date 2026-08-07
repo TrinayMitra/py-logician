@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# coding=utf-8
 
 
 """
@@ -7,25 +8,26 @@ Logger interfaces for standard Logger formatters.
 
 import logging
 import sys
-from typing import IO, Protocol, override
+from typing import override, IO, Protocol
 
 from logician.formatters import AllLevelSameFmt, DiffLevelDiffFmt, LogLevelFmt
 from logician.stdlog import (
+    TIMED_DETAIL_LOG_FMT,
+    TRACE_LOG_LEVEL,
     DETAIL_LOG_FMT,
     SHORT_LOG_FMT,
     SHORTER_LOG_FMT,
     SUCCESS_LOG_LEVEL,
-    TIMED_DETAIL_LOG_FMT,
-    TRACE_LOG_LEVEL,
 )
-from logician.stdlog.constants import LOG_FMT as F
-from logician.stdlog.constants import LOG_LVL as L
+from logician.stdlog.constants import LOG_LVL as L, LOG_FMT as F
 
 
 class StdLogLevelFmt(LogLevelFmt[L, F], Protocol):
     """
     Base interface for all the level-format mappers for stdlog.
     """
+
+    pass
 
 
 class StdLogAllLevelSameFmt(StdLogLevelFmt, AllLevelSameFmt[L, F]):

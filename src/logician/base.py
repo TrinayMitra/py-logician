@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# coding=utf-8
 
 """
 Logging base interfaces are for implementation as well as extension.
@@ -158,6 +159,8 @@ class _MinLogProtocol[L](
         - CRITICAL
     """
 
+    pass
+
 
 class MinLogProtocol[L](_MinLogProtocol[L], Protocol):
     """
@@ -171,6 +174,8 @@ class MinLogProtocol[L](_MinLogProtocol[L], Protocol):
 
     L - Level type, for e.g. ``int`` for python std logging.
     """
+
+    pass
 
 
 class AllLogProtocol[L](
@@ -204,6 +209,8 @@ class AllLogProtocol[L](
     L - Level type, for e.g. ``int`` for python std logging.
     """
 
+    pass
+
 
 class HasUnderlyingLogger[L](Protocol):
     """
@@ -224,7 +231,7 @@ class HasUnderlyingLogger[L](Protocol):
 
         :return: the contained underlying logger.
         """
-        # pragma: no cover
+        pass  # pragma: no cover
 
 
 class SupportsTraceback(Protocol):
@@ -266,3 +273,5 @@ class AllLevelLogger[L](
 
     L - Level type, for e.g. ``int`` for python std logging.
     """
+
+    pass
